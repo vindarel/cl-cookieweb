@@ -31,6 +31,12 @@ Your users can install the script with `{{ cookiecutter.username }}/{{ cookiecut
 
 # Dev
 
+Load the .asd, quickload it then
+
+```
+CL-USER> ({{ cookiecutter.project_name}}/web:start-app)
+```
+
 Tests are defined with [Fiveam](https://common-lisp.net/project/fiveam/docs/).
 
 Run them from the terminal with `make test`. You should see a failing test.

@@ -25,6 +25,8 @@
   (:use :cl)
   (:import-from :easy-routes
                 :defroute)
+  (:export :start-app
+           :stop-app)
   (:local-nicknames (#:a #:alexandria)
                     (#:models #:{{ cookiecutter.project_name }}/models)
                     (#:utils #:{{ cookiecutter.project_name}}/utils)))
