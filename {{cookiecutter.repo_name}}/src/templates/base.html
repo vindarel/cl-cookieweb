@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/admin.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/notiflix@2.1.3/dist/AIO/notiflix-aio-2.1.3.min.js"></script>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.js"></script>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.3.45/css/materialdesignicons.min.css">
+    <!-- lodash -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <!-- Buefy (Vue UI components) -->
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+
+    <!-- HTMX (yet another tool is the toolbet) -->
+    <script src="https://unpkg.com/htmx.org@1.3.3"></script>
+
+    <!-- The app -->
+    <script defer src="/static/{{ cookiecutter.project_name}}.js"></script>
+
+    <title>{{ "{% block title %}" }} {{ cookiecutter.project_name }} {{ "{% endblock %}" }}</title>
+  </head>
+
+  <body>
+    <!-- START NAV -->
+    <nav class="navbar is-white">
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item brand-text" href="/"> {{ cookiecutter.project_name }} </a>
+          <div class="navbar-burger burger" data-target="navMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <div id="navMenu" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="/">
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                  Database
+                </a>
+              </div>
+            </a>
+
+            <div id ="quick-search" class="navbar-item field">
+              <p class="control has-icons-right">
+                  <b-autocomplete placeholder="ISBN or Keywords..."
+                                  v-model="name"
+                                  field="title"
+                                  :data ="data"
+                                  :loading="isFetching"
+                                  @typing="getAsyncData"
+                      @select="option => itemSelected(option)"
+                  ><template slot-scope="props">{{ "{$ {{ props.option.title }} $}" }}</template>
+                  </b-autocomplete>
+                  <span class="icon is-small is-right">
+                  </span>
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        {% raw %}
+        <div class="navbar-end" >
+          <div class="navbar-item" >
+            {% if current-user %}
+            <div class="dropdown is-hoverable">
+              <div class="dropdown-trigger" >
+                <button class="button" aria-haspopup="true" aria-controls="profile-dropdown" >
+                  <span class="icon is-small" >
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                  </span>
+                  <span>{{ current-user | user-name }}</span>
+                </button>
+              </div>
+              <div class="dropdown-menu" role="menu" id="profile-dropdown">
+                <div class="dropdown-content" >
+                  <div class="dropdown-item" >
+                    <form action="/logout" method="POST" >
+                      <button class="button is-light">Logout</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% else %}
+            <form action="/login" >
+              <input name="referer-route" type="hidden" value="{{ request-uri }}"/>
+              <button class="button is-light" >Login</button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+    </nav>
+    <!-- END NAV -->
+
+    <!-- START MENU -->
+    <div class="container">
+      <div class="columns">
+        <div class="column is-3 ">
+          <aside class="menu is-hidden-mobile">
+            <p class="menu-label">
+              General
+            </p>
+            <ul class="menu-list">
+              <li><a {% if route == "/stock" %} class="is-active" {% endif %} href="/home"> Home </a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="column is-9">
+          {% block content %} {% endblock %}
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+
+  {% endraw %}
+
+  <script>
+    // bulma.js: hamburger toggle for mobile.
+    (function() {
+      var burger = document.querySelector('.burger');
+      var menu = document.querySelector('#'+burger.dataset.target);
+      burger.addEventListener('click', function() {
+        burger.classList.toggle('is-active');
+        menu.classList.toggle('is-active');
+      });
+    })();
+  </script>
+</html>

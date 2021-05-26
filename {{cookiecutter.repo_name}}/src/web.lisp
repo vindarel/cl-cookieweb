@@ -19,6 +19,7 @@
  (asdf:system-relative-pathname "{{ cookiecutter.project_name }}" "src/templates/"))
 
 (defparameter +base.html+ (djula:compile-template* "base.html"))
+(defparameter +dashboard.html+ (djula:compile-template* "dashboard.html"))
 
 ; (defparameter +404.html+ (djula:compile-template* "404.html"))
 
@@ -45,10 +46,8 @@
 
 ;; Root route.
 (defroute home-route ("/") ()
-  (render-template* +base.html+ nil
-                    :route "/"
-                    :current-user (current-user)
-                    :data (list :products (models:select-products))))
+  (djula:render-template* +dashboard.html+ nil
+                          :route "/"))
 
 (defroute card-page ("/product/:slug")
     (&get raw)
