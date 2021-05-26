@@ -1,4 +1,4 @@
-cl-cookieproject
+cl-cookieweb
 ================
 
 A [cookiecutter](https://github.com/audreyr/cookiecutter) template for Common Lisp projects featuring:
@@ -22,7 +22,7 @@ in the current working directory:
 
 ```bash
 $ pip install cookiecutter
-$ cookiecutter https://github.com/vindarel/cl-cookieproject
+$ cookiecutter https://github.com/vindarel/cl-cookieweb
 project_name [cookie-lisp-project]:
 repo_name [cookie-lisp-project]:
 description []: A test project
@@ -82,6 +82,17 @@ done]
 $ ./cookie-lisp-project
 Hello from cookie-lisp-project!
 ```
+
+## Cookiecutter options
+
+You can use command line options: https://cookiecutter.readthedocs.io/en/1.7.2/advanced/cli_options.html
+
+- `--no-input`: do not prompt for parameters and only use cookiecutter.json file content
+- ` --replay`: do not prompt for parameters and only use information entered previously
+- ` -f, --overwrite-if-exists`: overwrite the contents of the output directory if it already exists
+- ` -s, --skip-if-file-exists`: skip the files in the corresponding directories if they already exist
+- ` -o, --output-dir`: where to output the generated project dir into
+- ` --config-file`: user configuration file
 
 # TODOs
 
