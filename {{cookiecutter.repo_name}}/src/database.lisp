@@ -22,17 +22,9 @@
   "Migrate the tables after we changed the class definition."
   (mapcar #'mito:migrate-table *tables*))
 
-;; (defun bootstrap-base-roles ()
-;;   (define-role :visitor ())
-;;   (define-role :editor (:vendor))
-;;   (define-role :admin (:editor))
-;;   t)
-
 ;;
 ;; Entry points
 ;;
 (defun init-db ()
   "Connect to the DB, run the required migrations and define a couple base user roles."
-  (ensure-tables-exist)
-  ;;(bootstrap-base-roles)
-  )
+  (ensure-tables-exist))

@@ -40,10 +40,6 @@
 ;;; Routes.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Access roles.
-;; (models:define-role-access home-route :view :visitor)
-;; (models:define-role-access add-or-create-route :view :visitor)
-
 ;; Root route.
 (defroute home-route ("/") ()
   (djula:render-template* +dashboard.html+ nil
@@ -77,12 +73,6 @@
 
 (defun start-app (&key (port *port*))
   (models:connect)
-
-  ;; fix a puri bug. puri:parse-uri "/login?referer-route=/stock?q=lisp" fails,
-  ;; it doesn't like the last ?. See https://gitlab.common-lisp.net/clpm/puri/-/issues/2
-  (setf puri::*strict-illegal-query-characters*
-        (remove #\? puri::*strict-illegal-query-characters*))
-
   (setf *server* (make-instance 'easy-routes:easy-routes-acceptor :port port))
   (hunchentoot:start *server*)
   (serve-static-assets)
