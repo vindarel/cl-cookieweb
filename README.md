@@ -9,24 +9,23 @@ Featuring:
 
 - Recipe to run the project from sources or to build a binary, choosing your Lisp implementation
 - Test suite using [Fiveam](https://common-lisp.net/project/fiveam/docs/)
-- creation of a DB (SQLite)
-- a simple models.lisp with an example product definition
+- DB:
+  - creation of a DB (SQLite by default. That is easily configurable)
+  - a simple models.lisp with a Product table definition with the Mito ORM (see [Cookbook/databases#the Mito ORM](https://lispcookbook.github.io/cl-cookbook/databases.html#the-mito-orm-and-sxql))
+  - migrations (built-in Mito feature)
 - Djula templates
   - showing inheritance and custom filters
   - styled with [Bulma](https://github.com/jgthms/bulma)
   - showing a default dashboard
 - JavaScript:
   - load static assets with a dummy JS file.
-- DB:
-  - SQLite (that is easily configurable)
-  - a dummy Product table definition with the Mito ORM (see [Cookbook/databases#the Mito ORM](https://lispcookbook.github.io/cl-cookbook/databases.html#the-mito-orm-and-sxql))
-  - migrations (built-in Mito feature)
 - run the project:
   - from sources
     - CLI args parsing (port, help)
     - port is also taken from an environment variable
   - build a self-contained binary
     - (xxx: static assets not included?)
+  - Roswell integration to run the app as a script and to build, install and share binaries.
 
 Based on [cl-cookieproject](https://github.com/vindarel/cl-cookieproject): a ready-to-use project template.
 
@@ -154,4 +153,4 @@ WTFPL
 
 https://github.com/sponsors/vindarel/
 
-<a href='https://ko-fi.com/K3K828W0V' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=2' border='0' alt='Buy Me a Coffee :)' /></a>
+<a href='https://ko-fi.com/K3K828W0V' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=2' border='0' alt='buy me a coffee!' title='Is that useful and do you want to see more? Buy Me a Coffee, it is useful, no big income here!' /></a>
