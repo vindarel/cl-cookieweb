@@ -1,13 +1,15 @@
 (in-package :asdf-user)
 
 (defsystem "{{ cookiecutter.project_name }}"
-  :description "{{ cookiecutter.description }}"
   :author "{{ cookiecutter.author }} <{{ cookiecutter.email }}>"
   :version "{{ cookiecutter.version }}"
   :license "{{ cookiecutter.licence }}"
-  :serial t
+  :description "{{ cookiecutter.description }}"
+  :homepage ""
+  :bug-tracker ""
+  :source-control (:git "")
 
-  ;; dependencies
+  ;; Dependencies.
   :depends-on (
                ;; HTTP client
                :dexador
@@ -41,10 +43,12 @@
                ;; development utilities
                )
 
-  ;; build a binary:
+  ;; Build a binary.
   :build-operation "program-op"
   :entry-point "{{ cookiecutter.project_name}}:main"
 
+  ;; Project stucture.
+  :serial t
   :components ((:module "src"
                         :components
                         ;; stand-alone packages.
