@@ -7,5 +7,5 @@
     "author": "CL User",
     "licence": "MIT",
     "email": "{{ cookiecutter.author.split()|join('.')|lower }}@mail.com",
-    "username": "{{ cookiecutter.author|first|lower }}{{ cookiecutter.author.split()|last|lower }}",
+    "username": "{{ cookiecutter.author|first|lower }}{{ cookiecutter.author.split()|last|lower }}"
 }
