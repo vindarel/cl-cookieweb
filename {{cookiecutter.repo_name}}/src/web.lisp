@@ -71,8 +71,40 @@
 ;; Start-up functions.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun start-app (&key (port *port*))
+(defun find-config ()
+  (cond
+    ((uiop:file-exists-p "config.lisp")
+     "config.lisp")
+    (t
+     nil)))
+
+(defun load-config ()
+  "Load `config.lisp', situated at the project's root."
+  (let ((file (find-config)))
+    (if file
+        ;; One case of failure: a symbolic link exists, but
+        ;; the target file doesn't.
+        (progn
+          (uiop:format! t "Loading config file ~a…~&" file)
+          (load (uiop:native-namestring file)))
+        (format t "... no config file found.~&"))))
+
+(defun start-app (&key (port *port*) (load-config-p nil))
+  "Start the Hunchentoot web server on port PORT (defaults to `*PORT*'), serve static assets.
+
+  If LOAD-CONFIG-P is non nil, load the config file (this is normally done in the main function of run.lisp before)."
+  ;; You can use the find-port library to find an available port.
+
+  ;; Load the config.lisp init file.
+  (if load-config-p
+      (load-config)
+      (uiop:format! t "Skipping config file."))
+
+  ;; Set up the DB.
   (models:connect)
+
+  ;; Start the server.
+  (uiop:format! t "Starting Hunchentoot on port ~a…~&" port)
   (setf *server* (make-instance 'easy-routes:easy-routes-acceptor :port port))
   (hunchentoot:start *server*)
   (serve-static-assets)

@@ -69,6 +69,9 @@
     ;; Run the web server and catch errors.
     (handler-case
         (progn
+          ;; Load the init config file:
+          (web::load-config)
+
           (web:start-app :port (or (getf options :port)
                                    (ignore-errors (parse-integer (uiop:getenv "XYZ_PORT")))
                                    web::*port*))

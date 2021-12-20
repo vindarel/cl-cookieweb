@@ -147,6 +147,11 @@ Apps:
 - [ABStock](https://github.com/vindarel/ABStock) - a products catalogue, made for bookshops
 - [OpenBookStore](https://github.com/OpenBookStore/openbookstore) (WIP) - books management software. With user access roles, user login, a Vue.js page, API endpoints…
 
+# CHANGELOG
+
+- 2021/12: load a `config.lisp` init file before web startup. Same could be done with a post-init file.
+- init.
+
 ---
 
 WTFPL
