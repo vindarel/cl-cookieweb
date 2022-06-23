@@ -62,4 +62,6 @@
 
                (:module "src/models"
                         :components
-                        ((:file "models")))))
+                        ((:file "models")))
+
+               (:static-file "README.md")))
