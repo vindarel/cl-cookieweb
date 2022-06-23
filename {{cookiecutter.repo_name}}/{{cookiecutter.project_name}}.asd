@@ -79,3 +79,10 @@
 (require :cl+ssl)  ; sometimes necessary.
 #+linux (deploy:define-library cl+ssl::libssl :dont-deploy T)
 #+linux (deploy:define-library cl+ssl::libcrypto :dont-deploy T)
+
+;; ASDF wants to update itself and fails.
+;; Yeah, it does that even when running the binary on my VPS O_o
+;; Please, don't.
+(deploy:define-hook (:deploy asdf) (directory)
+  #+asdf (asdf:clear-source-registry)
+  #+asdf (defun asdf:upgrade-asdf () NIL))
