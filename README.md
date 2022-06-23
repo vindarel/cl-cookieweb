@@ -27,6 +27,7 @@ Featuring:
     - (xxx: static assets not included?)
     - with Deploy: ship shared libraries, run on another machine (rely on libssl of the host system). You then have to ship the `bin/` folder.
   - Roswell integration to run the app as a script and to build, install and share binaries.
+- Systemd example
 
 Based on [cl-cookieproject](https://github.com/vindarel/cl-cookieproject): a ready-to-use project template.
 
@@ -38,7 +39,7 @@ Might eventually appear:
 - Vue.js integration
 - HTMX example
 - ~~ISSR example~~ [view here](https://github.com/vindarel/ISSR-productlist/)
-- SystemD example
+- ~~SystemD example~~ OK
 
 ![](cookieweb.png)
 
@@ -162,8 +163,48 @@ Application started on port 4545.
 
 You can access your app on http://localhost:4545
 
+### Systemd
 
-## Cookiecutter options
+Create a new file in `/etc/systemd/system/webcookie.service`:
+
+```
+[Unit]
+Description=Lisp web project skeleton
+
+[Service]
+WorkingDirectory=/home/path/to/cookie-web-project/  # <- directory
+ExecStart=/home/path/to/cookie-web-project/bin/cookie-web-project  # <- binary
+Type=simple
+Restart=on-failure
+[Install]
+WantedBy=network.target
+```
+
+<!-- WorkingDirectory=/home/vince/projets/cl-cookieweb/cookie-lisp-project/ -->
+<!-- ExecStart=/home/vince/projets/cl-cookieweb/cookie-lisp-project/bin/cookie-lisp-project -->
+
+Commands:
+
+    sudo systemctl start webcookie.service
+
+and also `stop` and `status`.
+
+To see logs:
+
+    journalctl -u webcookie.service
+
+To start the app on (re)boot:
+
+    sudo systemctl enable webcookie.service
+
+If you want to run the app from sources, you can use the command
+`/usr/bin/make run`, but tweak `run.lisp` so that it calls `(run)`
+instead of `(main)`, so that the server thread is placed on the
+foreground. Otherwise, the Lisp process quits instantly and your
+process is not started.
+
+
+## cookiecutter options
 
 You can use command line options: https://cookiecutter.readthedocs.io/en/1.7.2/advanced/cli_options.html
 
@@ -201,6 +242,7 @@ Apps:
 # CHANGELOG
 
 - 2022/06: build with Deploy (handle shared libraries). Make ASDF not crash when running the binary on a system with an old configuration (it's a self-contained binary dude!).
+  - added Systemd service example.
 - 2021/12: load a `config.lisp` init file before web startup. Same could be done with a post-init file.
 - init.
 
