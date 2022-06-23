@@ -34,7 +34,7 @@
 (defpackage {{ cookiecutter.project_name }}
   (:use :cl
         :log4cl)
-  (:export :main)
+  (:export :main :run)
   (:local-nicknames (#:a #:alexandria)
                     (#:models #:{{ cookiecutter.project_name }}/models)
                     (#:web #:{{ cookiecutter.project_name }}/web)

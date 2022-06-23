@@ -22,6 +22,7 @@
   (format t "Argument error: ~a~&" (opts:option c)))
 
 (defun main ()
+  "Parse basic CLI args, start our web app."
 
   (unless (uiop:file-exists-p models::*db-name*)
     (uiop:format! t "Creating the database into ~a...~&" models::*db-name*)
@@ -66,20 +67,27 @@
     (when (getf options :verbose)
       (print-system-info))
 
-    ;; Run the web server and catch errors.
+    (web::load-config)
+
+    (web:start-app :port (or (getf options :port)
+                             (ignore-errors (parse-integer (uiop:getenv "XYZ_PORT")))
+                             web::*port*))))
+
+(defun run ()
+  "Start our web app calling the MAIN function, and:
+
+  - put the server thread on the foreground, so that Lisp doesn't quit
+    instantly, and our binary keeps running
+  - catch a couple errors: port in use, a user's C-c."
     (handler-case
         (progn
-          ;; Load the init config file:
-          (web::load-config)
 
-          (web:start-app :port (or (getf options :port)
-                                   (ignore-errors (parse-integer (uiop:getenv "XYZ_PORT")))
-                                   web::*port*))
+          (main)
 
-          ;; XXX: that's only needed for the binary, not from sources.
+          ;; That's only needed for the binary, not when running from sources
+          ;; (except if you run for Systemd…).
           ;; Put the server thread on the foreground.
-          ;; Without this, the binary exits immediately after having
-          ;; run the web server in its thread.
+          ;; Without this, the binary exits immediately.
           (bt:join-thread
            (find-if (lambda (th)
                       (search "hunchentoot" (bt:thread-name th)))
@@ -94,4 +102,4 @@
         (uiop:quit))
       (error (c)
         (format *error-output* "~&An error occured: ~a~&" c)
-        (uiop:quit 1)))))
+        (uiop:quit 1))))

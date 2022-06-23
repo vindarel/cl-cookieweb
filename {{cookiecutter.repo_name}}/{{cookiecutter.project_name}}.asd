@@ -40,12 +40,19 @@
                ;; scripting
                :unix-opts
 
+               ;; deployment
+               :deploy
+
                ;; development utilities
                )
 
   ;; Build a binary.
-  :build-operation "program-op"
-  :entry-point "{{ cookiecutter.project_name}}:main"
+  ;; :build-operation "program-op"  ;; usual op to build a binary.
+  ;; Deploy:
+  :defsystem-depends-on (:deploy)
+  :build-operation "deploy-op"
+  :build-pathname "{{ cookiecutter.project_name }}"
+  :entry-point "{{ cookiecutter.project_name}}:run"
 
   ;; Project stucture.
   :serial t
@@ -65,3 +72,10 @@
                         ((:file "models")))
 
                (:static-file "README.md")))
+
+;; Deploy may not find libcrypto on your system.
+;; But anyways, we won't ship it to rely instead
+;; on its presence on the target OS.
+(require :cl+ssl)  ; sometimes necessary.
+#+linux (deploy:define-library cl+ssl::libssl :dont-deploy T)
+#+linux (deploy:define-library cl+ssl::libcrypto :dont-deploy T)

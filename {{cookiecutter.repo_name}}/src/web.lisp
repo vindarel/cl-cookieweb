@@ -98,7 +98,7 @@
   ;; Load the config.lisp init file.
   (if load-config-p
       (load-config)
-      (uiop:format! t "Skipping config file."))
+      (uiop:format! t "Skipping config file.~&"))
 
   ;; Set up the DB.
   (models:connect)

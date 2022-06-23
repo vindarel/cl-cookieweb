@@ -25,6 +25,7 @@ Featuring:
     - port is also taken from an environment variable
   - build a self-contained binary
     - (xxx: static assets not included?)
+    - with Deploy: ship shared libraries, run on another machine (rely on libssl of the host system). You then have to ship the `bin/` folder.
   - Roswell integration to run the app as a script and to build, install and share binaries.
 
 Based on [cl-cookieproject](https://github.com/vindarel/cl-cookieproject): a ready-to-use project template.
@@ -99,18 +100,68 @@ Build an executable:
 ```bash
 $ make build
 […]
-[saving current Lisp image into /home/vince/bacasable/lisp-projects/cookie-web-project/cookie-web-project:
-writing 0 bytes from the read-only space at 0x50000000
-writing 736 bytes from the static space at 0x50100000
-writing 37060608 bytes from the dynamic space at 0x1000000000
-writing 2154496 bytes from the immobile space at 0x50200000
-writing 13910016 bytes from the immobile space at 0x52000000
-done]
+; Loading "cookie-web-project"
+..................................................
+[package cookie-web-project/utils]...............
+[package cookie-web-project/models]..............
+[package cookie-web-project/web].................
+[package cookie-web-project]...
 
-$ ./cookie-web-project
-cookie-web-project version 0.0.1
-Application started on port 4242.
+#P"/home/vindarel/projects/cl-cookieweb/cookie-web-project/bin/cookie-web-project"
+ ==> Running load hooks.
+ ==> Gathering system information.
+   -> Will load the following foreign libs on boot:
+      (#<DEPLOY:LIBRARY LIBSSL>)
+ ==> Deploying files to /home/vindarel/projects/cl-cookieweb/cookie-web-project/bin/
+   -> Copying library #<LIBRARY LIBZ>
+ ==> Running build hooks.
+   -> Closing foreign library #<LIBRARY LIBSSL>.
+ ==> Dumping image to /home/vindarel/projects/cl-cookieweb/cookie-web-project/bin/cookie-web-project
+[undoing binding stack and other enclosing state... done]
+[defragmenting immobile space... 2002+33897+3559+3148+28073+31776 objects... done]
+[saving current Lisp image into /home/vindarel/projects/cl-cookieweb/cookie-web-project/bin/cookie-web-project:
+writing 0 bytes from the read-only space at 0x20000000
+compressed 0 bytes into 8 at level -1
+writing 1648 bytes from the static space at 0x20100000
+compressed 32768 bytes into 582 at level -1
+writing 95027200 bytes from the dynamic space at 0x1000000000
+compressed 95027200 bytes into 18359087 at level -1
+writing 3043328 bytes from the immobile space at 0x20300000
+compressed 3047424 bytes into 795041 at level -1
+writing 22947392 bytes from the immobile space at 0x21b00000
+compressed 22970368 bytes into 6758085 at level -1
+done]
 ```
+
+A `bin/` directory is created with shared .so libraries:
+
+```
+$ ls bin
+cookie-web-project  libz.so
+```
+(and when required, you'll find libmagic.so, libosicat.so etc)
+
+Run the binary from the `bin/` folder. We can see that Deploy handles
+loading those shared libraries.
+
+```
+$ ./bin/cookie-web-project
+ ==> Performing warm boot.
+   -> Runtime directory is /home/vince/projets/cl-cookieweb/cookie-web-project/bin/
+   -> Resource directory is /home/vince/projets/cl-cookieweb/cookie-web-project/bin/
+ ==> Running boot hooks.
+ ==> Reloading foreign libraries.
+   -> Loading foreign library #<LIBRARY LIBSSL>.
+ ==> Launching application.
+ […]
+cookie-web-project version 0.0.1
+Loading config file config.lisp…
+Skipping config file.Starting Hunchentoot on port 4545…
+Application started on port 4545.
+```
+
+You can access your app on http://localhost:4545
+
 
 ## Cookiecutter options
 
