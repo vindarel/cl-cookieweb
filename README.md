@@ -242,6 +242,7 @@ Apps:
 # CHANGELOG
 
 - 2022/06: build with Deploy (handle shared libraries). Make ASDF not crash when running the binary on a system with an old configuration (it's a self-contained binary dude!).
+  - <2025-04-03> this was because we didn't reference the DB module in the .asd. Added `:dbd-sqlite3`, see .asd for the other drivers.
   - added Systemd service example.
 - 2021/12: load a `config.lisp` init file before web startup. Same could be done with a post-init file.
 - init.

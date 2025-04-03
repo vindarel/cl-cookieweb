@@ -27,6 +27,12 @@
                ;; DB
                :mito
                :mito-auth
+               ;; It is important, specially when building a binary,
+               ;; to load the DB driver (otherwise Mito will try to do it on the fly,
+               ;; and might fail on a machine without QL).
+               :dbd-sqlite3
+               ;; :dbd-mysql
+               ;; :dbd-postgres
 
                ;; utilities
                :access
