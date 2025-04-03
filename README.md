@@ -176,6 +176,7 @@ WorkingDirectory=/home/path/to/cookie-web-project/  # <- directory
 ExecStart=/home/path/to/cookie-web-project/bin/cookie-web-project  # <- binary
 Type=simple
 Restart=on-failure
+RestartSec=3
 [Install]
 WantedBy=network.target
 ```
