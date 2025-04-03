@@ -232,6 +232,7 @@ Other demos and skeletons:
 
 Resources:
 
+- NEW as of 2025: [Web Apps in Lisp: Know-How](https://web-apps-in-lisp.github.io/)
 - The CL Cookbook: https://lispcookbook.github.io/cl-cookbook/web.html
 - libraries: https://github.com/CodyReichert/awesome-cl
 
